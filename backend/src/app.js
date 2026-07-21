@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import healthRoutes from './routes/health.routes.js';
 
 const app = express();
 
@@ -14,5 +15,7 @@ app.get('/', (req, res) => {
         message: "Welcome to PennyPilot API",
     });
 });
+
+app.use('/health', healthRoutes);
 
 export default app;
