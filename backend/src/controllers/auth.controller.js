@@ -65,3 +65,69 @@ export const registerUser = async (req, res) => {
         });
     }
 }
+
+export const loginUser = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        if(!email || !password){
+            return res.status(400).json({
+                success: false,
+                message: "Email and password are required",
+            });
+        }
+
+        const existingUser = await db.query.users.findFirst({
+            where: eq(users.email, email),
+        });
+
+        if(!existingUser){
+            return res.status(404).json({
+                success: false,
+                message: "User not found",
+            });
+        }
+
+        const isPasswordCorrect = await bcrypt.compare(
+            password,
+            existingUser.password
+        );
+
+        if(!isPasswordCorrect){
+            return res.status(401).json({
+                success: false,
+                message: "Invalid password",
+            });
+        }
+
+        const token = jwt.sign(
+            {
+                id: existingUser.id,
+                email: existingUser.email,
+            },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: "7d",
+            }
+        );
+
+        res.status(200).json({
+            success: true,
+            message: "Login successfully",
+            token,
+            user: {
+                id: existingUser.id,
+                name: existingUser.name,
+                email: existingUser.email,
+            },
+        });
+
+    } catch (error) {
+        console.error(error);
+
+        res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
+};
