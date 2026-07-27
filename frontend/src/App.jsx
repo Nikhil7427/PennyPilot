@@ -1,11 +1,30 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import Dashboard from "./pages/Dashboard";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import ProtectedRoute from "./components/ProtectedRoute";
+
 function App() {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-100">
-      <h1 className="text-5xl font-bold text-blue-600">
-        PennyPilot 🚀
-      </h1>
-    </div>
-  );
+    return (
+        <BrowserRouter>
+            <Routes>
+
+                <Route
+                    path="/"
+                    element={
+                        <ProtectedRoute>
+                            <Dashboard />
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+
+            </Routes>
+        </BrowserRouter>
+    );
 }
 
 export default App;
