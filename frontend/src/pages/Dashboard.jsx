@@ -1,28 +1,101 @@
-import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import Navbar from "../components/layout/Navbar";
+import Sidebar from "../components/layout/Sidebar";
+import SummaryCard from "../components/dashboard/SummaryCard";
+import ExpenseForm from "../components/dashboard/ExpenseForm";
+import ExpenseTable from "../components/dashboard/ExpenseTable";
+import EmptyState from "../components/dashboard/EmptyState";
+import { deleteExpense } from "../services/expense.services";
+
+import { useEffect, useState } from 'react';
+import { getExpenses } from '../services/expense.services'
 
 function Dashboard() {
-    const { logout } = useAuth();
-    const navigate = useNavigate();
 
-    const handleLogout = () => {
-        logout();
-        navigate("/login");
+    const [expenses, setExpenses] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    const fetchExpenses = async () => {
+        try {
+            const response = await getExpenses();
+
+            setExpenses(response.expenses || []);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
     };
 
+    useEffect(() => {
+        fetchExpenses();
+    }, []);
+
+    const handleDelete = async (id) => {
+        try {
+            await deleteExpense(id);
+
+            fetchExpenses();
+            
+        } catch (error) {
+            console.error(error);
+            alert("Filed to delete Expense");
+        }
+    }
+
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-slate-100">
+        <div className="bg-slate-100 min-h-screen">
 
-            <h1 className="text-4xl font-bold mb-6">
-                Dashboard
-            </h1>
+            <Navbar />
 
-            <button
-                onClick={handleLogout}
-                className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700"
-            >
-                Logout
-            </button>
+            <div className="flex">
+
+                <Sidebar />
+
+                <main className="flex-1 p-8">
+
+                    <h1 className="text-4xl font-bold mb-8">
+                        Welcome Back 👋
+                    </h1>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                        <SummaryCard
+                            title="Total Expenses"
+                            value="₹0"
+                        />
+
+                        <SummaryCard
+                            title="This Month"
+                            value="₹0"
+                        />
+
+                        <SummaryCard
+                            title="Categories"
+                            value="0"
+                        />
+
+                    </div>
+
+                    <div className="mt-8">
+                        <ExpenseForm onExpenseAdded={fetchExpenses} />
+                    </div>
+
+                    <div className="mt-8">
+                        {loading ? (
+                            <p>Loading...</p>
+                        ) : expenses.length === 0 ? (
+                            <EmptyState />
+                        ) : (
+                            <ExpenseTable
+                                expenses={expenses}
+                                onDelete={handleDelete}
+                            />
+                        )}
+                    </div>
+
+                </main>
+
+            </div>
 
         </div>
     );

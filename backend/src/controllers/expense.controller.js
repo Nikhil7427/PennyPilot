@@ -1,8 +1,6 @@
-import { defineConfig } from 'drizzle-kit';
 import { db } from '../db/index.js'
 import { expenses } from '../db/schema.js';
 import { eq, and } from 'drizzle-orm';
-import e from 'express';
 
 export const createExpense = async (req, res) => {
     try {
