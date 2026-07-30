@@ -1,28 +1,53 @@
-import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import Navbar from "../components/layout/Navbar";
+import Sidebar from "../components/layout/Sidebar";
+import SummaryCard from "../components/dashboard/SummaryCard";
+import ExpenseForm from "../components/dashboard/ExpenseForm";
+import ExpenseTable from "../components/dashboard/ExpenseTable";
 
 function Dashboard() {
-    const { logout } = useAuth();
-    const navigate = useNavigate();
-
-    const handleLogout = () => {
-        logout();
-        navigate("/login");
-    };
-
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-slate-100">
+        <div className="bg-slate-100 min-h-screen">
 
-            <h1 className="text-4xl font-bold mb-6">
-                Dashboard
-            </h1>
+            <Navbar />
 
-            <button
-                onClick={handleLogout}
-                className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700"
-            >
-                Logout
-            </button>
+            <div className="flex">
+
+                <Sidebar />
+
+                <main className="flex-1 p-8">
+
+                    <h1 className="text-4xl font-bold mb-8">
+                        Welcome Back 👋
+                    </h1>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                        <SummaryCard
+                            title="Total Expenses"
+                            value="₹0"
+                        />
+
+                        <SummaryCard
+                            title="This Month"
+                            value="₹0"
+                        />
+
+                        <SummaryCard
+                            title="Categories"
+                            value="0"
+                        />
+
+                    </div>
+
+                    <div className="mt-8">
+                        <ExpenseForm />
+                    </div>
+
+                    <ExpenseTable />
+
+                </main>
+
+            </div>
 
         </div>
     );
