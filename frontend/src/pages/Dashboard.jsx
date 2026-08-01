@@ -10,10 +10,16 @@ import ExpensePieChart from "../components/dashboard/ExpensePieChart";
 import { useEffect, useState } from 'react';
 import { getExpenses } from '../services/expense.services'
 
+import { toast } from "react-toastify";
+
 function Dashboard() {
+
+    const [editingExpense, setEditingExpense] = useState(null);
 
     const [expenses, setExpenses] = useState([]);
     const [loading, setLoading] = useState(true);
+
+    const [deletingId, setDeletingId] = useState(null);
 
     const fetchExpenses = async () => {
         try {
@@ -33,15 +39,24 @@ function Dashboard() {
 
     const handleDelete = async (id) => {
         try {
+            setDeletingId(id);
             await deleteExpense(id);
+
+            toast.success("Expense deleted successfully!");
 
             fetchExpenses();
 
         } catch (error) {
             console.error(error);
-            alert("Filed to delete Expense");
+            toast.error("Failed to delete expense.");
+        } finally {
+            setDeletingId(null);
         }
-    }
+    };
+
+    const handleEdit = (expense) => {
+        setEditingExpense(expense);
+    };
 
     const totalExpenses = expenses.reduce(
         (total, expense) => total + Number(expense.amount),
@@ -99,12 +114,20 @@ function Dashboard() {
                     </div>
 
                     <div className="mt-8">
-                        <ExpenseForm onExpenseAdded={fetchExpenses} />
+                        <ExpenseForm
+                            onExpenseAdded={fetchExpenses}
+                            editingExpense={editingExpense}
+                            setEditingExpense={setEditingExpense}
+                        />
                     </div>
 
                     <div className="mt-8">
                         {loading ? (
-                            <p>Loading...</p>
+                            <div className="text-center py-10">
+                                <p className="text-lg font-semibold animate-pulse">
+                                    Loading expenses...
+                                </p>
+                            </div>
                         ) : expenses.length === 0 ? (
                             <EmptyState />
                         ) : (
@@ -112,6 +135,8 @@ function Dashboard() {
                                 <ExpenseTable
                                     expenses={expenses}
                                     onDelete={handleDelete}
+                                    onEdit={handleEdit}
+                                    deletingId={deletingId}
                                 />
                                 <ExpensePieChart expenses={expenses} />
                             </>
