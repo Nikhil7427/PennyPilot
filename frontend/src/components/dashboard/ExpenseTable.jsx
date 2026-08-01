@@ -1,4 +1,4 @@
-function ExpenseTable({ expenses, onDelete }) {
+function ExpenseTable({ expenses, onDelete, onEdit, deletingId }) {
     return (
         <div className="bg-white shadow rounded-xl mt-6 p-6">
 
@@ -31,12 +31,22 @@ function ExpenseTable({ expenses, onDelete }) {
                                 <td className="border p-3">
                                     {expense.notes || "-"}
                                 </td>
-                                <td className="border p-3 text-center">
+                                <td className="border p-3 text-center space-x-2">
+
+                                    <button
+                                        onClick={() => onEdit(expense)}
+                                        disabled={deletingId === expense.id}
+                                        className="bg-yellow-500 text-white rounded px-3 py-1 hover:bg-yellow-600 disabled:opacity-50"
+                                    >
+                                        Edit
+                                    </button>
+
                                     <button
                                         onClick={() => onDelete(expense.id)}
-                                        className="bg-red-500 text-white rounded px-3 py-1 hover:bg-red-600"
+                                        disabled={deletingId === expense.id}
+                                        className="bg-red-500 text-white rounded px-3 py-1 hover:bg-red-600 disabled:opacity-50"
                                     >
-                                        Delete
+                                        {deletingId === expense.id ? "Deleting..." : "Delete"}
                                     </button>
                                 </td>
                             </tr>

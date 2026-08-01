@@ -5,14 +5,21 @@ import ExpenseForm from "../components/dashboard/ExpenseForm";
 import ExpenseTable from "../components/dashboard/ExpenseTable";
 import EmptyState from "../components/dashboard/EmptyState";
 import { deleteExpense } from "../services/expense.services";
+import ExpensePieChart from "../components/dashboard/ExpensePieChart";
 
 import { useEffect, useState } from 'react';
 import { getExpenses } from '../services/expense.services'
 
+import { toast } from "react-toastify";
+
 function Dashboard() {
+
+    const [editingExpense, setEditingExpense] = useState(null);
 
     const [expenses, setExpenses] = useState([]);
     const [loading, setLoading] = useState(true);
+
+    const [deletingId, setDeletingId] = useState(null);
 
     const fetchExpenses = async () => {
         try {
@@ -32,15 +39,45 @@ function Dashboard() {
 
     const handleDelete = async (id) => {
         try {
+            setDeletingId(id);
             await deleteExpense(id);
 
+            toast.success("Expense deleted successfully!");
+
             fetchExpenses();
-            
+
         } catch (error) {
             console.error(error);
-            alert("Filed to delete Expense");
+            toast.error("Failed to delete expense.");
+        } finally {
+            setDeletingId(null);
         }
-    }
+    };
+
+    const handleEdit = (expense) => {
+        setEditingExpense(expense);
+    };
+
+    const totalExpenses = expenses.reduce(
+        (total, expense) => total + Number(expense.amount),
+        0
+    );
+
+    const totalTransactions = expenses.length;
+
+    const currentMonth = new Date().getMonth();
+    const currentYear = new Date().getFullYear();
+
+    const thisMonthExpenses = expenses
+        .filter((expense) => {
+            const expenseDate = new Date(expense.date);
+
+            return (
+                expenseDate.getMonth() === currentMonth &&
+                expenseDate.getFullYear() === currentYear
+            );
+        })
+        .reduce((total, expense) => total + Number(expense.amount), 0);
 
     return (
         <div className="bg-slate-100 min-h-screen">
@@ -61,35 +98,48 @@ function Dashboard() {
 
                         <SummaryCard
                             title="Total Expenses"
-                            value="₹0"
+                            value={`₹${totalExpenses}`}
+                        />
+
+                        <SummaryCard
+                            title="Transactions"
+                            value={totalTransactions}
                         />
 
                         <SummaryCard
                             title="This Month"
-                            value="₹0"
-                        />
-
-                        <SummaryCard
-                            title="Categories"
-                            value="0"
+                            value={`₹${thisMonthExpenses}`}
                         />
 
                     </div>
 
                     <div className="mt-8">
-                        <ExpenseForm onExpenseAdded={fetchExpenses} />
+                        <ExpenseForm
+                            onExpenseAdded={fetchExpenses}
+                            editingExpense={editingExpense}
+                            setEditingExpense={setEditingExpense}
+                        />
                     </div>
 
                     <div className="mt-8">
                         {loading ? (
-                            <p>Loading...</p>
+                            <div className="text-center py-10">
+                                <p className="text-lg font-semibold animate-pulse">
+                                    Loading expenses...
+                                </p>
+                            </div>
                         ) : expenses.length === 0 ? (
                             <EmptyState />
                         ) : (
-                            <ExpenseTable
-                                expenses={expenses}
-                                onDelete={handleDelete}
-                            />
+                            <>
+                                <ExpenseTable
+                                    expenses={expenses}
+                                    onDelete={handleDelete}
+                                    onEdit={handleEdit}
+                                    deletingId={deletingId}
+                                />
+                                <ExpensePieChart expenses={expenses} />
+                            </>
                         )}
                     </div>
 

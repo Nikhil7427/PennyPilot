@@ -1,16 +1,39 @@
 import { useForm } from "react-hook-form";
-import { addExpense } from "../../services/expense.services";
-import { useState } from "react";
+import { addExpense, updateExpense } from "../../services/expense.services";
+import { useState, useEffect } from "react";
 
-function ExpenseForm({ onExpenseAdded }) {
+import { toast } from 'react-toastify';
+
+function ExpenseForm({ onExpenseAdded, editingExpense, setEditingExpense }) {
 
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const {
         register,
         handleSubmit,
+        formState: { errors },
         reset,
     } = useForm();
+
+    useEffect(() => {
+        if (editingExpense) {
+            reset({
+                title: editingExpense.title,
+                amount: editingExpense.amount,
+                category: editingExpense.category,
+                date: editingExpense.date,
+                notes: editingExpense.notes || "",
+            });
+        } else {
+            reset({
+                title: "",
+                amount: "",
+                category: "",
+                date: "",
+                notes: "",
+            });
+        }
+    }, [editingExpense, reset]);
 
     const onSubmit = async (data) => {
         try {
@@ -18,14 +41,23 @@ function ExpenseForm({ onExpenseAdded }) {
 
             data.amount = Number(data.amount);
 
-            await addExpense(data);
+            if (editingExpense) {
+                await updateExpense(editingExpense.id, data);
+                toast.success("Expense updated successfully!");
+            } else {
+                await addExpense(data);
+                toast.success("Expense added successfully!");
+            }
 
             reset();
+
+            setEditingExpense(null);
 
             onExpenseAdded();
 
         } catch (error) {
             console.error(error);
+            toast.error("Something went wrong!");
         } finally {
             setIsSubmitting(false);
         }
@@ -87,8 +119,23 @@ function ExpenseForm({ onExpenseAdded }) {
                     disabled={isSubmitting}
                     className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
                 >
-                    {isSubmitting ? "Adding..." : "Add Expense"}
+                    {isSubmitting
+                        ? (editingExpense ? "Updating..." : "Adding...")
+                        : (editingExpense ? "Update Expense" : "Add Expense")}
                 </button>
+
+                {editingExpense && (
+                    <button
+                        type="button"
+                        onClick={() => {
+                            reset();
+                            setEditingExpense(null);
+                        }}
+                        className="ml-4 bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600"
+                    >
+                        Cancel
+                    </button>
+                )}
 
             </form>
 
