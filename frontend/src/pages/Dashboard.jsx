@@ -6,6 +6,7 @@ import ExpenseTable from "../components/dashboard/ExpenseTable";
 import EmptyState from "../components/dashboard/EmptyState";
 import { deleteExpense } from "../services/expense.services";
 import ExpensePieChart from "../components/dashboard/ExpensePieChart";
+import RecentTransactions from "../components/dashboard/RecentTransactions";
 
 import { useEffect, useState } from 'react';
 import { getExpenses } from '../services/expense.services'
@@ -79,6 +80,20 @@ function Dashboard() {
         })
         .reduce((total, expense) => total + Number(expense.amount), 0);
 
+    const today = new Date();
+
+    const todaysExpenses = expenses
+        .filter((expense) => {
+            const expenseDate = new Date(expense.date);
+
+            return (
+                expenseDate.getDate() === today.getDate() &&
+                expenseDate.getMonth() === today.getMonth() &&
+                expenseDate.getFullYear() === today.getFullYear()
+            );
+        })
+        .reduce((total, expense) => total + Number(expense.amount), 0);
+
     return (
         <div className="bg-slate-100 min-h-screen">
 
@@ -94,11 +109,11 @@ function Dashboard() {
                         Welcome Back 👋
                     </h1>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
                         <SummaryCard
                             title="Total Expenses"
-                            value={`₹${totalExpenses}`}
+                            value={`₹${totalExpenses.toLocaleString("en-IN")}`}
                         />
 
                         <SummaryCard
@@ -108,7 +123,12 @@ function Dashboard() {
 
                         <SummaryCard
                             title="This Month"
-                            value={`₹${thisMonthExpenses}`}
+                            value={`₹${thisMonthExpenses.toLocaleString("en-IN")}`}
+                        />
+
+                        <SummaryCard
+                            title="Today's Expense"
+                            value={`₹${todaysExpenses.toLocaleString("en-IN")}`}
                         />
 
                     </div>
@@ -139,6 +159,8 @@ function Dashboard() {
                                     deletingId={deletingId}
                                 />
                                 <ExpensePieChart expenses={expenses} />
+
+                                <RecentTransactions expenses={expenses}/>
                             </>
                         )}
                     </div>
