@@ -7,6 +7,7 @@ import EmptyState from "../components/dashboard/EmptyState";
 import { deleteExpense } from "../services/expense.services";
 import ExpensePieChart from "../components/dashboard/ExpensePieChart";
 import RecentTransactions from "../components/dashboard/RecentTransactions";
+import MonthlyExpenseChart from "../components/dashboard/MonthlyExpenseChart";
 
 import { useEffect, useState } from 'react';
 import { getExpenses } from '../services/expense.services'
@@ -94,6 +95,32 @@ function Dashboard() {
         })
         .reduce((total, expense) => total + Number(expense.amount), 0);
 
+    const monthlyData = Array.from({ length: 12 }, (_, index) => {
+        const monthName = new Date(
+            0,
+            index,
+        ).toLocaleString("en-IN", {
+            month: "short",
+        });
+
+        const total = expenses
+            .filter((expense) => {
+                const date = new Date(expense.date);
+
+                return date.getMonth() === index;
+            })
+            .reduce(
+                (sum, expense) =>
+                    sum + Number(expense.amount),
+                0
+            );
+
+        return {
+            month: monthName,
+            total,
+        };
+    });
+
     return (
         <div className="bg-slate-100 min-h-screen">
 
@@ -158,9 +185,13 @@ function Dashboard() {
                                     onEdit={handleEdit}
                                     deletingId={deletingId}
                                 />
-                                <ExpensePieChart expenses={expenses} />
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
+                                    <ExpensePieChart expenses={expenses} />
 
-                                <RecentTransactions expenses={expenses}/>
+                                    <MonthlyExpenseChart data={monthlyData} />
+                                </div>
+
+                                <RecentTransactions expenses={expenses} />
                             </>
                         )}
                     </div>
