@@ -64,7 +64,7 @@ function ExpenseForm({ onExpenseAdded, editingExpense, setEditingExpense }) {
     };
 
     return (
-        <div className="bg-white shadow rounded-xl p-6">
+        <div className="bg-white shadow rounded-xl p-4 md:p-6">
 
             <h2 className="text-2xl font-bold mb-6">
                 Add Expense
@@ -79,19 +79,19 @@ function ExpenseForm({ onExpenseAdded, editingExpense, setEditingExpense }) {
                     type="text"
                     placeholder="Title"
                     {...register("title")}
-                    className="w-full border rounded-lg p-3"
+                    className="w-full border rounded-lg px-4 py-2"
                 />
 
                 <input
                     type="number"
                     placeholder="Amount"
                     {...register("amount")}
-                    className="w-full border rounded-lg p-3"
+                    className="w-full border rounded-lg px-4 py-2"
                 />
 
                 <select
                     {...register("category")}
-                    className="w-full border rounded-lg p-3"
+                    className="w-full border rounded-lg px-4 py-2"
                 >
                     <option value="">Select Category</option>
                     <option value="Food">Food</option>
@@ -105,37 +105,39 @@ function ExpenseForm({ onExpenseAdded, editingExpense, setEditingExpense }) {
                 <input
                     type="date"
                     {...register("date")}
-                    className="w-full border rounded-lg p-3"
+                    className="w-full border rounded-lg px-4 py-2"
                 />
 
                 <textarea
                     placeholder="Notes"
                     {...register("notes")}
-                    className="w-full border rounded-lg p-3"
+                    rows={4}
+                    className="w-full border rounded-lg px-4 py-2 resize-none"
                 />
-
-                <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
-                >
-                    {isSubmitting
-                        ? (editingExpense ? "Updating..." : "Adding...")
-                        : (editingExpense ? "Update Expense" : "Add Expense")}
-                </button>
-
-                {editingExpense && (
+                <div className="flex flex-col sm:flex-row gap-3 mt-4">
                     <button
-                        type="button"
-                        onClick={() => {
-                            reset();
-                            setEditingExpense(null);
-                        }}
-                        className="ml-4 bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600"
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="w-full sm:w-auto bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
                     >
-                        Cancel
+                        {isSubmitting
+                            ? (editingExpense ? "Updating..." : "Adding...")
+                            : (editingExpense ? "Update Expense" : "Add Expense")}
                     </button>
-                )}
+
+                    {editingExpense && (
+                        <button
+                            type="button"
+                            onClick={() => {
+                                reset();
+                                setEditingExpense(null);
+                            }}
+                            className="w-full sm:w-auto bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600"
+                        >
+                            Cancel
+                        </button>
+                    )}
+                </div>
 
             </form>
 

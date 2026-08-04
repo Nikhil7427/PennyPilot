@@ -8,46 +8,47 @@ function ExpenseTable({ expenses, onDelete, onEdit, deletingId }) {
 
             <div className="overflow-x-auto">
 
-                <table className="w-full border-collapse">
+                <table className="min-w-full">
 
                     <thead>
                         <tr className="bg-gray-100">
-                            <th className="border p-3 text-left">Title</th>
-                            <th className="border p-3 text-left">Amount</th>
-                            <th className="border p-3 text-left">Category</th>
-                            <th className="border p-3 text-left">Date</th>
-                            <th className="border p-3 text-left">Notes</th>
-                            <th className="border p-3 text-center">Actions</th>
+                            <th className="px-4 py-3 whitespace-nowrap">Title</th>
+                            <th className="px-4 py-3 whitespace-nowrap">Amount</th>
+                            <th className="px-4 py-3 whitespace-nowrap">Category</th>
+                            <th className="px-4 py-3 whitespace-nowrap">Date</th>
+                            <th className="px-4 py-3 whitespace-nowrap">Notes</th>
+                            <th className="px-4 py-3 whitespace-nowrap">Actions</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         {expenses.map((expense) => (
                             <tr key={expense.id}>
-                                <td className="border p-3">{expense.title}</td>
-                                <td className="border p-3">₹{expense.amount}</td>
-                                <td className="border p-3">{expense.category}</td>
-                                <td className="border p-3">{expense.date}</td>
-                                <td className="border p-3">
+                                <td className="px-4 py-3 whitespace-nowrap">{expense.title}</td>
+                                <td className="px-4 py-3 whitespace-nowrap">₹{expense.amount}</td>
+                                <td className="px-4 py-3 whitespace-nowrap">{expense.category}</td>
+                                <td className="px-4 py-3 whitespace-nowrap">{expense.date}</td>
+                                <td className="px-4 py-3 whitespace-nowrap">
                                     {expense.notes || "-"}
                                 </td>
-                                <td className="border p-3 text-center space-x-2">
+                                <td className="px-4 py-3 ">
+                                    <div className="flex gap-2">
+                                        <button
+                                            onClick={() => onEdit(expense)}
+                                            disabled={deletingId === expense.id}
+                                            className="bg-yellow-500 text-white rounded px-3 py-1 hover:bg-yellow-600 disabled:opacity-50"
+                                        >
+                                            Edit
+                                        </button>
 
-                                    <button
-                                        onClick={() => onEdit(expense)}
-                                        disabled={deletingId === expense.id}
-                                        className="bg-yellow-500 text-white rounded px-3 py-1 hover:bg-yellow-600 disabled:opacity-50"
-                                    >
-                                        Edit
-                                    </button>
-
-                                    <button
-                                        onClick={() => onDelete(expense.id)}
-                                        disabled={deletingId === expense.id}
-                                        className="bg-red-500 text-white rounded px-3 py-1 hover:bg-red-600 disabled:opacity-50"
-                                    >
-                                        {deletingId === expense.id ? "Deleting..." : "Delete"}
-                                    </button>
+                                        <button
+                                            onClick={() => onDelete(expense.id)}
+                                            disabled={deletingId === expense.id}
+                                            className="bg-red-500 text-white rounded px-3 py-1 hover:bg-red-600 disabled:opacity-50"
+                                        >
+                                            {deletingId === expense.id ? "Deleting..." : "Delete"}
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         ))}
