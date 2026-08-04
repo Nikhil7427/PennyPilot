@@ -1,6 +1,6 @@
 function Sidebar() {
     return(
-        <aside className="w-64 bg-white shadow-md min-h-screen p-6">
+        <aside className="hidden lg:block w-64 bg-white shadow-md min-h-screen p-6">
             <h2 className="text-xl font-bold mb-8">
                 Dashboard
             </h2>

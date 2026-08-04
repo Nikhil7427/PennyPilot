@@ -126,76 +126,78 @@ function Dashboard() {
 
             <Navbar />
 
-            <div className="flex">
+            <div className="flex flex-col lg:flex-row">
 
                 <Sidebar />
 
-                <main className="flex-1 p-8">
+                <main className="flex-1 p-4 md:p-6 lg:p-8">
 
-                    <h1 className="text-4xl font-bold mb-8">
-                        Welcome Back 👋
-                    </h1>
+                    <div className="max-w-7xl mx-auto">
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-6">
+                            Welcome Back 👋
+                        </h1>
 
-                        <SummaryCard
-                            title="Total Expenses"
-                            value={`₹${totalExpenses.toLocaleString("en-IN")}`}
-                        />
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
-                        <SummaryCard
-                            title="Transactions"
-                            value={totalTransactions}
-                        />
+                            <SummaryCard
+                                title="Total Expenses"
+                                value={`₹${totalExpenses.toLocaleString("en-IN")}`}
+                            />
 
-                        <SummaryCard
-                            title="This Month"
-                            value={`₹${thisMonthExpenses.toLocaleString("en-IN")}`}
-                        />
+                            <SummaryCard
+                                title="Transactions"
+                                value={totalTransactions}
+                            />
 
-                        <SummaryCard
-                            title="Today's Expense"
-                            value={`₹${todaysExpenses.toLocaleString("en-IN")}`}
-                        />
+                            <SummaryCard
+                                title="This Month"
+                                value={`₹${thisMonthExpenses.toLocaleString("en-IN")}`}
+                            />
 
-                    </div>
+                            <SummaryCard
+                                title="Today's Expense"
+                                value={`₹${todaysExpenses.toLocaleString("en-IN")}`}
+                            />
 
-                    <div className="mt-8">
-                        <ExpenseForm
-                            onExpenseAdded={fetchExpenses}
-                            editingExpense={editingExpense}
-                            setEditingExpense={setEditingExpense}
-                        />
-                    </div>
+                        </div>
 
-                    <div className="mt-8">
-                        {loading ? (
-                            <div className="text-center py-10">
-                                <p className="text-lg font-semibold animate-pulse">
-                                    Loading expenses...
-                                </p>
-                            </div>
-                        ) : expenses.length === 0 ? (
-                            <EmptyState />
-                        ) : (
-                            <>
-                                <ExpenseTable
-                                    expenses={expenses}
-                                    onDelete={handleDelete}
-                                    onEdit={handleEdit}
-                                    deletingId={deletingId}
-                                />
-                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
-                                    <ExpensePieChart expenses={expenses} />
+                        <div className="mt-8">
+                            <ExpenseForm
+                                onExpenseAdded={fetchExpenses}
+                                editingExpense={editingExpense}
+                                setEditingExpense={setEditingExpense}
+                            />
+                        </div>
 
-                                    <MonthlyExpenseChart data={monthlyData} />
+                        <div className="mt-8">
+                            {loading ? (
+                                <div className="text-center py-10">
+                                    <p className="text-lg font-semibold animate-pulse">
+                                        Loading expenses...
+                                    </p>
                                 </div>
+                            ) : expenses.length === 0 ? (
+                                <EmptyState />
+                            ) : (
+                                <>
+                                    <ExpenseTable
+                                        expenses={expenses}
+                                        onDelete={handleDelete}
+                                        onEdit={handleEdit}
+                                        deletingId={deletingId}
+                                    />
+                                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
+                                        <ExpensePieChart expenses={expenses} />
 
-                                <RecentTransactions expenses={expenses} />
-                            </>
-                        )}
+                                        <MonthlyExpenseChart data={monthlyData} />
+                                    </div>
+
+                                    <RecentTransactions expenses={expenses} />
+                                </>
+                            )}
+                        </div>
                     </div>
-
                 </main>
 
             </div>

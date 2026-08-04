@@ -37,52 +37,54 @@ function RecentTransactions({ expenses }) {
                     No recent transactions.
                 </p>
             ) : (
-                <table className="w-full">
+                <div className="overflow-x-auto">
+                    <table className="min-w-full">
 
-                    <thead>
-                        <tr className="border-b">
-                            <th className="text-left py-2">Title</th>
-                            <th className="text-left py-2">Category</th>
-                            <th className="text-right py-2">Amount</th>
-                            <th className="text-right py-2">Date</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        {recentExpenses.map((expense) => (
-                            <tr key={expense.id} className="border-b">
-
-                                <td className="py-3">
-                                    {expense.title}
-                                </td>
-
-                                <td>
-                                    <span
-                                        className={`px-3 py-1 rounded-full text-sm font-medium ${getCategoryColor(expense.category)}`}
-                                    >
-                                        {expense.category}
-                                    </span>
-                                </td>
-
-                                <td className="text-right font-medium">
-                                    <span className="font-semibold text-blue-600">
-                                        ₹{Number(expense.amount).toLocaleString("en-IN")}
-                                    </span>
-                                </td>
-
-                                <td className="text-right">
-                                    {new Date(expense.date).toLocaleDateString("en-IN", {
-                                        day: "numeric",
-                                        month: "short",
-                                        year: "numeric"
-                                    })}
-                                </td>
-
+                        <thead>
+                            <tr className="border-b">
+                                <th className="px-4 py-3 whitespace-nowrap">Title</th>
+                                <th className="px-4 py-3 whitespace-nowrap">Category</th>
+                                <th className="px-4 py-3 whitespace-nowrap">Amount</th>
+                                <th className="px-4 py-3 whitespace-nowrap">Date</th>
                             </tr>
-                        ))}
-                    </tbody>
+                        </thead>
 
-                </table>
+                        <tbody>
+                            {recentExpenses.map((expense) => (
+                                <tr key={expense.id} className="border-b">
+
+                                    <td className="px-4 py-3 whitespace-nowrap">
+                                        {expense.title}
+                                    </td>
+
+                                    <td className="px-4 py-3 whitespace-nowrap">
+                                        <span
+                                            className={`px-2 py-1 text-xs md:text-sm rounded-full font-medium ${getCategoryColor(expense.category)}`}
+                                        >
+                                            {expense.category}
+                                        </span>
+                                    </td>
+
+                                    <td className="px-4 py-3 whitespace-nowrap ">
+                                        <span className="font-semibold whitespace-nowrap text-blue-600">
+                                            ₹{Number(expense.amount).toLocaleString("en-IN")}
+                                        </span>
+                                    </td>
+
+                                    <td className="px-4 py-3 whitespace-nowrap">
+                                        {new Date(expense.date).toLocaleDateString("en-IN", {
+                                            day: "numeric",
+                                            month: "short",
+                                            year: "numeric"
+                                        })}
+                                    </td>
+
+                                </tr>
+                            ))}
+                        </tbody>
+
+                    </table>
+                </div>
             )}
         </div>
     );
