@@ -3,6 +3,7 @@ import { loginUser } from "../services/auth.service";
 import { useAuth } from "../context/AuthContext.jsx"
 import { use } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function Login() {
     const {
@@ -90,6 +91,16 @@ function Login() {
                     >
                         Login
                     </button>
+
+                    <p className="text-sm text-gray-600 text-center mt-4">
+                        Don't have an account?{" "}
+                        <Link
+                            to="/register"
+                            className="text-blue-600 font-medium hover:underline"
+                        >
+                            Register
+                        </Link>
+                    </p>
 
                 </form>
 

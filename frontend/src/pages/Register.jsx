@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form';
 import { registerUser } from '../services/auth.service.js';
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { Link } from "react-router-dom";
 
 function Register() {
     const {
@@ -102,6 +103,16 @@ function Register() {
                     >
                         Register
                     </button>
+
+                    <p className="text-sm text-gray-600 text-center mt-4">
+                        Already have an account?{" "}
+                        <Link
+                            to="/login"
+                            className="text-blue-600 font-medium hover:underline"
+                        >
+                            Login
+                        </Link>
+                    </p>
                 </form>
             </div>
         </div>
