@@ -11,7 +11,7 @@ function Register() {
         formState: { errors },
     } = useForm();
 
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, login } = useAuth();
 
     if (isAuthenticated) {
         return <Navigate to="/" replace />;
@@ -21,7 +21,7 @@ function Register() {
         try {
             const response = await registerUser(data);
 
-            console.log(response);
+            login(response.token);
 
             alert("Registration Successful!");
 
