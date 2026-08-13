@@ -27,65 +27,129 @@ function RecentTransactions({ expenses }) {
     };
 
     return (
-        <div className="bg-white shadow rounded-xl p-6 mt-8">
-            <h2 className="text-xl font-semibold mb-4">
-                Recent Transactions
-            </h2>
+        <div className="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden mt-10">
+
+            {/* Header */}
+            <div className="p-5 sm:p-6 border-b border-gray-100">
+
+                <div className="flex items-center justify-between">
+
+                    <div>
+                        <h2 className="text-lg sm:text-xl font-semibold text-gray-900">
+                            Recent Transactions
+                        </h2>
+
+                        <p className="text-sm text-gray-500 mt-1">
+                            Your latest spending activity
+                        </p>
+                    </div>
+
+                    <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center">
+                        <span className="text-lg">
+                            🕐
+                        </span>
+                    </div>
+
+                </div>
+
+            </div>
 
             {recentExpenses.length === 0 ? (
-                <p className="text-gray-500">
-                    No recent transactions.
-                </p>
+
+                <div className="p-8 text-center">
+
+                    <div className="text-4xl mb-3">
+                        🧾
+                    </div>
+
+                    <p className="text-gray-500 text-sm">
+                        No recent transactions.
+                    </p>
+
+                </div>
+
             ) : (
-                <div className="overflow-x-auto">
-                    <table className="min-w-full">
 
-                        <thead>
-                            <tr className="border-b">
-                                <th className="px-4 py-3 whitespace-nowrap">Title</th>
-                                <th className="px-4 py-3 whitespace-nowrap">Category</th>
-                                <th className="px-4 py-3 whitespace-nowrap">Amount</th>
-                                <th className="px-4 py-3 whitespace-nowrap">Date</th>
-                            </tr>
-                        </thead>
+                <div className="divide-y divide-gray-100">
 
-                        <tbody>
-                            {recentExpenses.map((expense) => (
-                                <tr key={expense.id} className="border-b">
+                    {recentExpenses.map((expense) => (
 
-                                    <td className="px-4 py-3 whitespace-nowrap">
+                        <div
+                            key={expense.id}
+                            className="p-4 sm:p-5 flex items-center justify-between gap-4 hover:bg-gray-50 transition-colors"
+                        >
+
+                            {/* Left */}
+                            <div className="flex items-center gap-3 min-w-0">
+
+                                <div className="w-10 h-10 shrink-0 rounded-xl bg-gray-100 flex items-center justify-center">
+                                    <span className="text-lg">
+                                        {expense.category === "Food"
+                                            ? "🍔"
+                                            : expense.category === "Travel"
+                                                ? "✈️"
+                                                : expense.category === "Shopping"
+                                                    ? "🛍️"
+                                                    : expense.category === "Bills"
+                                                        ? "📄"
+                                                        : expense.category === "Entertainment"
+                                                            ? "🎬"
+                                                            : "💳"}
+                                    </span>
+                                </div>
+
+                                <div className="min-w-0">
+
+                                    <p className="font-medium text-gray-900 truncate">
                                         {expense.title}
-                                    </td>
+                                    </p>
 
-                                    <td className="px-4 py-3 whitespace-nowrap">
+                                    <div className="flex items-center gap-2 mt-1">
+
                                         <span
-                                            className={`px-2 py-1 text-xs md:text-sm rounded-full font-medium ${getCategoryColor(expense.category)}`}
+                                            className={`px-2 py-0.5 text-xs rounded-full font-medium ${getCategoryColor(expense.category)}`}
                                         >
                                             {expense.category}
                                         </span>
-                                    </td>
 
-                                    <td className="px-4 py-3 whitespace-nowrap ">
-                                        <span className="font-semibold whitespace-nowrap text-blue-600">
-                                            ₹{Number(expense.amount).toLocaleString("en-IN")}
+                                        <span className="text-xs text-gray-400">
+                                            {new Date(expense.date).toLocaleDateString(
+                                                "en-IN",
+                                                {
+                                                    day: "numeric",
+                                                    month: "short",
+                                                    year: "numeric",
+                                                }
+                                            )}
                                         </span>
-                                    </td>
 
-                                    <td className="px-4 py-3 whitespace-nowrap">
-                                        {new Date(expense.date).toLocaleDateString("en-IN", {
-                                            day: "numeric",
-                                            month: "short",
-                                            year: "numeric"
-                                        })}
-                                    </td>
+                                    </div>
 
-                                </tr>
-                            ))}
-                        </tbody>
+                                </div>
 
-                    </table>
+                            </div>
+
+                            {/* Amount */}
+                            <div className="shrink-0 text-right">
+
+                                <p className="font-semibold text-gray-900">
+                                    ₹{Number(expense.amount).toLocaleString("en-IN")}
+                                </p>
+
+                                <p className="text-xs text-gray-400 mt-1">
+                                    Expense
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    ))}
+
                 </div>
+
             )}
+
         </div>
     );
 }
