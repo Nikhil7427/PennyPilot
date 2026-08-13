@@ -1,9 +1,7 @@
 import { useForm } from "react-hook-form";
 import { loginUser } from "../services/auth.service";
-import { useAuth } from "../context/AuthContext.jsx"
-import { use } from "react";
-import { useNavigate, Navigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext.jsx";
+import { useNavigate, Navigate, Link } from "react-router-dom";
 
 function Login() {
     const {
@@ -12,10 +10,8 @@ function Login() {
         formState: { errors },
     } = useForm();
 
-    const { login } = useAuth();
+    const { login, isAuthenticated } = useAuth();
     const navigate = useNavigate();
-
-    const { isAuthenticated } = useAuth();
 
     if (isAuthenticated) {
         return <Navigate to="/" replace />;
@@ -26,9 +22,7 @@ function Login() {
             const response = await loginUser(data);
 
             login(response.token);
-
             navigate("/");
-
         } catch (error) {
             alert(
                 error.response?.data?.message ||
@@ -38,74 +32,129 @@ function Login() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-slate-100">
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex items-center justify-center px-4 py-8">
 
-            <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
+            <div className="w-full max-w-md">
 
-                <h1 className="text-3xl font-bold text-center mb-6">
-                    Login
-                </h1>
-
-                <form
-                    onSubmit={handleSubmit(onSubmit)}
-                    className="space-y-4"
-                >
-
-                    <div>
-                        <input
-                            type="email"
-                            placeholder="Email"
-                            className="w-full border rounded-lg p-3"
-                            {...register("email", {
-                                required: "Email is required",
-                            })}
-                        />
-
-                        {errors.email && (
-                            <p className="text-red-500 text-sm">
-                                {errors.email.message}
-                            </p>
-                        )}
+                {/* Logo / Brand */}
+                <div className="text-center mb-8">
+                    <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-blue-600 shadow-lg shadow-blue-200 mb-4">
+                        <span className="text-2xl font-bold text-white">
+                            P
+                        </span>
                     </div>
 
-                    <div>
-                        <input
-                            type="password"
-                            placeholder="Password"
-                            className="w-full border rounded-lg p-3"
-                            {...register("password", {
-                                required: "Password is required",
-                            })}
-                        />
+                    <h1 className="text-3xl font-bold text-gray-900">
+                        Welcome to PennyPilot
+                    </h1>
 
-                        {errors.password && (
-                            <p className="text-red-500 text-sm">
-                                {errors.password.message}
-                            </p>
-                        )}
-                    </div>
-
-                    <button
-                        type="submit"
-                        className="w-full bg-blue-600 text-white py-3 rounded-lg"
-                    >
-                        Login
-                    </button>
-
-                    <p className="text-sm text-gray-600 text-center mt-4">
-                        Don't have an account?{" "}
-                        <Link
-                            to="/register"
-                            className="text-blue-600 font-medium hover:underline"
-                        >
-                            Register
-                        </Link>
+                    <p className="text-gray-500 mt-2">
+                        Take control of your finances
                     </p>
+                </div>
 
-                </form>
+                {/* Login Card */}
+                <div className="bg-white rounded-2xl shadow-xl shadow-gray-200/60 border border-gray-100 p-7 sm:p-8">
+
+                    <div className="mb-6">
+                        <h2 className="text-xl font-semibold text-gray-900">
+                            Sign in to your account
+                        </h2>
+
+                        <p className="text-sm text-gray-500 mt-1">
+                            Enter your details to continue
+                        </p>
+                    </div>
+
+                    <form
+                        onSubmit={handleSubmit(onSubmit)}
+                        className="space-y-5"
+                    >
+
+                        {/* Email */}
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Email address
+                            </label>
+
+                            <input
+                                type="email"
+                                placeholder="you@example.com"
+                                className={`w-full px-4 py-3 rounded-xl border bg-gray-50 outline-none transition
+                                    ${
+                                        errors.email
+                                            ? "border-red-400 focus:ring-2 focus:ring-red-100"
+                                            : "border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-50"
+                                    }`}
+                                {...register("email", {
+                                    required: "Email is required",
+                                })}
+                            />
+
+                            {errors.email && (
+                                <p className="text-red-500 text-xs mt-1.5">
+                                    {errors.email.message}
+                                </p>
+                            )}
+                        </div>
+
+                        {/* Password */}
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Password
+                            </label>
+
+                            <input
+                                type="password"
+                                placeholder="Enter your password"
+                                className={`w-full px-4 py-3 rounded-xl border bg-gray-50 outline-none transition
+                                    ${
+                                        errors.password
+                                            ? "border-red-400 focus:ring-2 focus:ring-red-100"
+                                            : "border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-50"
+                                    }`}
+                                {...register("password", {
+                                    required: "Password is required",
+                                })}
+                            />
+
+                            {errors.password && (
+                                <p className="text-red-500 text-xs mt-1.5">
+                                    {errors.password.message}
+                                </p>
+                            )}
+                        </div>
+
+                        {/* Button */}
+                        <button
+                            type="submit"
+                            className="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold py-3 rounded-xl transition duration-200 shadow-md shadow-blue-200"
+                        >
+                            Sign In
+                        </button>
+
+                    </form>
+
+                    {/* Register */}
+                    <div className="mt-6 pt-6 border-t border-gray-100 text-center">
+                        <p className="text-sm text-gray-500">
+                            Don't have an account?{" "}
+                            <Link
+                                to="/register"
+                                className="text-blue-600 font-semibold hover:text-blue-700 hover:underline"
+                            >
+                                Create an account
+                            </Link>
+                        </p>
+                    </div>
+
+                </div>
+
+                <p className="text-center text-xs text-gray-400 mt-6">
+                    © 2026 PennyPilot. Manage your money smarter.
+                </p>
 
             </div>
-
         </div>
     );
 }

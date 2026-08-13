@@ -37,37 +37,98 @@ function ExpensePieChart({ expenses }) {
         })
     );
 
+    const total = chartData.reduce(
+        (sum, item) => sum + item.value,
+        0
+    );
+
     return (
-        <div className="bg-white shadow rounded-xl p-6 mt-6">
-            <h2 className="text-xl font-semibold mb-4">
-                Expenses by Category
-            </h2>
+        <div className="bg-white border border-gray-100 rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md transition-shadow duration-200">
 
-            <ResponsiveContainer width="100%" height={300}>
+            {/* Header */}
+            <div className="flex items-start justify-between mb-2">
 
-                <PieChart>
+                <div>
+                    <h2 className="text-lg font-semibold text-gray-900">
+                        Spending by Category
+                    </h2>
 
-                    <Pie
-                        data={chartData}
-                        dataKey="value"
-                        nameKey="name"
-                        outerRadius={100}
-                        label
-                    >
-                        {chartData.map((entry, index) => (
-                            <Cell
-                                key={entry.name}
-                                fill={COLORS[index % COLORS.length]}
-                            />
-                        ))}
-                    </Pie>
+                    <p className="text-sm text-gray-500 mt-1">
+                        See where your money is going
+                    </p>
+                </div>
 
-                    <Tooltip />
-                    <Legend />
+                <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
+                    <span className="text-lg">
+                        📊
+                    </span>
+                </div>
 
-                </PieChart>
-                
-            </ResponsiveContainer>
+            </div>
+
+            {/* Total */}
+            <div className="mt-5 mb-2">
+                <p className="text-xs text-gray-400">
+                    Total spending
+                </p>
+
+                <p className="text-xl font-bold text-gray-900">
+                    ₹{total.toLocaleString("en-IN")}
+                </p>
+            </div>
+
+            {/* Chart */}
+            <div className="w-full h-[300px] sm:h-[320px]">
+
+                <ResponsiveContainer width="100%" height="100%">
+
+                    <PieChart>
+
+                        <Pie
+                            data={chartData}
+                            dataKey="value"
+                            nameKey="name"
+                            cx="50%"
+                            cy="45%"
+                            innerRadius={65}
+                            outerRadius={100}
+                            paddingAngle={3}
+                            stroke="none"
+                        >
+                            {chartData.map((entry, index) => (
+                                <Cell
+                                    key={entry.name}
+                                    fill={COLORS[index % COLORS.length]}
+                                />
+                            ))}
+                        </Pie>
+
+                        <Tooltip
+                            formatter={(value) =>
+                                `₹${Number(value).toLocaleString("en-IN")}`
+                            }
+                            contentStyle={{
+                                borderRadius: "12px",
+                                border: "1px solid #e5e7eb",
+                                boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+                            }}
+                        />
+
+                        <Legend
+                            verticalAlign="bottom"
+                            height={45}
+                            iconType="circle"
+                            wrapperStyle={{
+                                fontSize: "12px",
+                            }}
+                        />
+
+                    </PieChart>
+
+                </ResponsiveContainer>
+
+            </div>
+
         </div>
     );
 }

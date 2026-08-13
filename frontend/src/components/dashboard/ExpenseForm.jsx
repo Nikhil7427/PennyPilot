@@ -64,10 +64,10 @@ function ExpenseForm({ onExpenseAdded, editingExpense, setEditingExpense }) {
     };
 
     return (
-        <div className="bg-white shadow rounded-xl p-4 md:p-6">
+        <div className="bg-white shadow rounded-xl p-4 md:p-6 w-full">
 
-            <h2 className="text-2xl font-bold mb-6">
-                Add Expense
+            <h2 className="text-xl sm:text-2xl font-bold mb-6">
+                {editingExpense ? "Edit Expense" : "Add Expense"}
             </h2>
 
             <form
@@ -79,19 +79,19 @@ function ExpenseForm({ onExpenseAdded, editingExpense, setEditingExpense }) {
                     type="text"
                     placeholder="Title"
                     {...register("title")}
-                    className="w-full border rounded-lg px-4 py-2"
+                    className="w-full border rounded-lg px-4 py-3"
                 />
 
                 <input
                     type="number"
                     placeholder="Amount"
                     {...register("amount")}
-                    className="w-full border rounded-lg px-4 py-2"
+                    className="w-full border rounded-lg px-4 py-3"
                 />
 
                 <select
                     {...register("category")}
-                    className="w-full border rounded-lg px-4 py-2"
+                    className="w-full border rounded-lg px-4 py-3"
                 >
                     <option value="">Select Category</option>
                     <option value="Food">Food</option>
@@ -105,14 +105,14 @@ function ExpenseForm({ onExpenseAdded, editingExpense, setEditingExpense }) {
                 <input
                     type="date"
                     {...register("date")}
-                    className="w-full border rounded-lg px-4 py-2"
+                    className="w-full border rounded-lg px-4 py-3"
                 />
 
                 <textarea
                     placeholder="Notes"
                     {...register("notes")}
                     rows={4}
-                    className="w-full border rounded-lg px-4 py-2 resize-none"
+                    className="w-full border rounded-lg px-4 py-3 resize-none"
                 />
                 <div className="flex flex-col sm:flex-row gap-3 mt-4">
                     <button
