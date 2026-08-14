@@ -119,12 +119,12 @@ function ExpenseForm({ onExpenseAdded, editingExpense, setEditingExpense }) {
                 </select>
 
                 <div>
-                    <label
+                    {/* <label
                         htmlFor="expense-date"
                         className="block text-sm font-medium text-gray-700 mb-2"
                     >
                         Date
-                    </label>
+                    </label> */}
 
                     <input
                         id="expense-date"
