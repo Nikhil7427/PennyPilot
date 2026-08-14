@@ -104,3 +104,27 @@ PennyPilot/
 │       └── routes/
 │
 └── README.md
+
+```
+
+## 📸 Screenshots
+
+### Login Page
+
+![PennyPilot Login](frontend/public/screenshots/login.png)
+
+### Register Page
+
+![PennyPilot Register](frontend/public/screenshots/register.png)
+
+### Dashboard
+
+![PennyPilot Dashboard](frontend/public/screenshots/dashboard.png)
+
+### Analytics
+
+![PennyPilot Analytics](frontend/public/screenshots/analytics.png)
+
+### Mobile View
+
+![PennyPilot Mobile Dashboard](frontend/public/screenshots/mobile.png)
