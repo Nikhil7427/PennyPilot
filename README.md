@@ -7,6 +7,28 @@ An AI-ready full-stack expense tracker built with React, Node.js, Express.js, an
 - **Frontend:** https://penny-pilot-two.vercel.app/login
 - **Backend API:** https://pennypilot-backend-pxm6.onrender.com
 
+## 📸 Screenshots
+
+### Login Page
+
+![PennyPilot Login](frontend/public/screenshots/login.png)
+
+### Register Page
+
+![PennyPilot Register](frontend/public/screenshots/register.png)
+
+### Dashboard
+
+![PennyPilot Dashboard](frontend/public/screenshots/dashboard.png)
+
+### Analytics
+
+![PennyPilot Analytics](frontend/public/screenshots/analytics.png)
+
+### Mobile View
+
+![PennyPilot Mobile Dashboard](frontend/public/screenshots/mobile.png)
+
 ## ✨ Features
 
 ### 🔐 Authentication
@@ -106,25 +128,3 @@ PennyPilot/
 └── README.md
 
 ```
-
-## 📸 Screenshots
-
-### Login Page
-
-![PennyPilot Login](frontend/public/screenshots/login.png)
-
-### Register Page
-
-![PennyPilot Register](frontend/public/screenshots/register.png)
-
-### Dashboard
-
-![PennyPilot Dashboard](frontend/public/screenshots/dashboard.png)
-
-### Analytics
-
-![PennyPilot Analytics](frontend/public/screenshots/analytics.png)
-
-### Mobile View
-
-![PennyPilot Mobile Dashboard](frontend/public/screenshots/mobile.png)
