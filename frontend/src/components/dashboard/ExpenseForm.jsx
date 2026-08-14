@@ -2,11 +2,21 @@ import { useForm } from "react-hook-form";
 import { addExpense, updateExpense } from "../../services/expense.services";
 import { useState, useEffect } from "react";
 
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 function ExpenseForm({ onExpenseAdded, editingExpense, setEditingExpense }) {
 
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const getTodayDate = () => {
+        const today = new Date();
+
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, "0");
+        const day = String(today.getDate()).padStart(2, "0");
+
+        return `${year}-${month}-${day}`;
+    };
 
     const {
         register,
@@ -29,7 +39,7 @@ function ExpenseForm({ onExpenseAdded, editingExpense, setEditingExpense }) {
                 title: "",
                 amount: "",
                 category: "",
-                date: "",
+                date: getTodayDate(),
                 notes: "",
             });
         }
@@ -49,7 +59,13 @@ function ExpenseForm({ onExpenseAdded, editingExpense, setEditingExpense }) {
                 toast.success("Expense added successfully!");
             }
 
-            reset();
+            reset({
+                title: "",
+                amount: "",
+                category: "",
+                date: getTodayDate(),
+                notes: "",
+            });
 
             setEditingExpense(null);
 
@@ -102,11 +118,21 @@ function ExpenseForm({ onExpenseAdded, editingExpense, setEditingExpense }) {
                     <option value="Other">Other</option>
                 </select>
 
-                <input
-                    type="date"
-                    {...register("date")}
-                    className="w-full border rounded-lg px-4 py-3"
-                />
+                <div>
+                    <label
+                        htmlFor="expense-date"
+                        className="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                        Date
+                    </label>
+
+                    <input
+                        id="expense-date"
+                        type="date"
+                        {...register("date")}
+                        className="w-full border rounded-lg px-4 py-3"
+                    />
+                </div>
 
                 <textarea
                     placeholder="Notes"
@@ -114,7 +140,9 @@ function ExpenseForm({ onExpenseAdded, editingExpense, setEditingExpense }) {
                     rows={4}
                     className="w-full border rounded-lg px-4 py-3 resize-none"
                 />
+
                 <div className="flex flex-col sm:flex-row gap-3 mt-4">
+
                     <button
                         type="submit"
                         disabled={isSubmitting}
@@ -129,7 +157,14 @@ function ExpenseForm({ onExpenseAdded, editingExpense, setEditingExpense }) {
                         <button
                             type="button"
                             onClick={() => {
-                                reset();
+                                reset({
+                                    title: "",
+                                    amount: "",
+                                    category: "",
+                                    date: getTodayDate(),
+                                    notes: "",
+                                });
+
                                 setEditingExpense(null);
                             }}
                             className="w-full sm:w-auto bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600"
@@ -137,6 +172,7 @@ function ExpenseForm({ onExpenseAdded, editingExpense, setEditingExpense }) {
                             Cancel
                         </button>
                     )}
+
                 </div>
 
             </form>
